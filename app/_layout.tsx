@@ -1,16 +1,18 @@
 import 'react-native-gesture-handler'
-import '../tamagui.generated.css'
 
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
-import * as Sentry from '@sentry/react-native'
+import { useColorScheme } from 'react-native'
 import Constants from 'expo-constants'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { useColorScheme } from 'react-native'
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
+
+import * as Sentry from '@sentry/react-native'
 import { TamaguiProvider, Theme } from 'tamagui'
 
 import { QueryProvider } from '@/src/providers/query-provider'
 import { tamaguiConfig } from '@/tamagui.config'
+
+import '../tamagui.generated.css'
 
 const sentryDsn = Constants.expoConfig?.extra?.sentryDsn
 

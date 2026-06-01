@@ -1,6 +1,7 @@
+import { Platform } from 'react-native'
+
 import { Check, Globe2, Layers3, Smartphone } from '@tamagui/lucide-icons'
 import { useQuery } from '@tanstack/react-query'
-import { Platform } from 'react-native'
 import { Button, H1, H2, Paragraph, ScrollView, XStack, YStack } from 'tamagui'
 
 import { useSessionStore } from '@/src/stores/session-store'
@@ -53,8 +54,8 @@ export default function HomeScreen() {
           <YStack gap="$3">
             <H1 size="$10">Abyul Platform</H1>
             <Paragraph size="$6" color="$color11" style={{ maxWidth: 720 }}>
-              Expo, React Native Web, Tamagui를 중심으로 모바일과 웹을 함께
-              운영하는 최신 RN 프로젝트 기반입니다.
+              Expo, React Native Web, Tamagui를 중심으로 모바일과 웹을 함께 운영하는 최신 RN
+              프로젝트 기반입니다.
             </Paragraph>
           </YStack>
 

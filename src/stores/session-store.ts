@@ -1,4 +1,5 @@
 import { Platform } from 'react-native'
+
 import { createMMKV } from 'react-native-mmkv'
 import { create } from 'zustand'
 import { createJSONStorage, persist, StateStorage } from 'zustand/middleware'
@@ -40,8 +41,7 @@ export const useSessionStore = create<SessionState>()(
   persist(
     (set) => ({
       launchCount: 0,
-      increaseLaunchCount: () =>
-        set((state) => ({ launchCount: state.launchCount + 1 })),
+      increaseLaunchCount: () => set((state) => ({ launchCount: state.launchCount + 1 })),
     }),
     {
       name: 'abyul-session',
