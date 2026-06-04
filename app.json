@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Abyul Platform",
-    "slug": "abyul-platform",
+    "name": "Vox2Vocal",
+    "slug": "vox2vocal",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "abyul",
+    "scheme": "vox2vocal",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

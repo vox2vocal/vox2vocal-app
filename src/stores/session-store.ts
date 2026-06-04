@@ -44,7 +44,7 @@ export const useSessionStore = create<SessionState>()(
       increaseLaunchCount: () => set((state) => ({ launchCount: state.launchCount + 1 })),
     }),
     {
-      name: 'abyul-session',
+      name: 'vox2vocal-session',
       storage: createJSONStorage(() => storage),
     },
   ),

@@ -1,7 +1,7 @@
 import { Platform } from 'react-native'
 
-import { Check, Globe2, Layers3, Smartphone } from '@tamagui/lucide-icons'
 import { useQuery } from '@tanstack/react-query'
+import { Check, Globe2, Layers3, Smartphone } from 'lucide-react-native'
 import { Button, H1, H2, Paragraph, ScrollView, XStack, YStack } from 'tamagui'
 
 import { useSessionStore } from '@/src/stores/session-store'
@@ -47,21 +47,21 @@ export default function HomeScreen() {
       >
         <YStack gap="$5" style={{ width: '100%', maxWidth: 960 }}>
           <XStack gap="$3" style={{ alignItems: 'center' }}>
-            <Globe2 size={28} color="$blue10" />
-            <Paragraph color="$color10">Universal React Native starter</Paragraph>
+            <Globe2 size={28} color="#2563eb" />
+            <Paragraph color="$color10">AI voice production platform</Paragraph>
           </XStack>
 
           <YStack gap="$3">
-            <H1 size="$10">Abyul Platform</H1>
+            <H1 size="$10">Vox2Vocal</H1>
             <Paragraph size="$6" color="$color11" style={{ maxWidth: 720 }}>
-              Expo, React Native Web, Tamagui를 중심으로 모바일과 웹을 함께 운영하는 최신 RN
-              프로젝트 기반입니다.
+              Expo, React Native Web, Tamagui 기반으로 모바일과 웹을 함께 운영하는 Vox2Vocal
+              클라이언트입니다.
             </Paragraph>
           </YStack>
 
           <XStack gap="$3" style={{ flexWrap: 'wrap' }}>
             <Button icon={Smartphone} theme="blue" onPress={increaseLaunchCount}>
-              앱 상태 확인 {launchCount}
+              실행 상태 확인 {launchCount}
             </Button>
             <Button icon={Layers3} variant="outlined">
               {data?.platform ?? 'loading'}
@@ -82,7 +82,7 @@ export default function HomeScreen() {
             <YStack gap="$3">
               {stackItems.map((item) => (
                 <XStack key={item} gap="$3" style={{ alignItems: 'center' }}>
-                  <Check size={18} color="$green10" />
+                  <Check size={18} color="#16a34a" />
                   <Paragraph size="$5">{item}</Paragraph>
                 </XStack>
               ))}
