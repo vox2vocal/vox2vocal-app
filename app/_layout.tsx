@@ -1,9 +1,8 @@
 import 'react-native-gesture-handler'
 
-import { useColorScheme } from 'react-native'
 import Constants from 'expo-constants'
 import { Stack } from 'expo-router'
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router/react-navigation'
+import { DarkTheme, ThemeProvider } from 'expo-router/react-navigation'
 import { StatusBar } from 'expo-status-bar'
 
 import * as Sentry from '@sentry/react-native'
@@ -25,16 +24,15 @@ if (sentryDsn) {
 }
 
 function RootLayout() {
-  const colorScheme = useColorScheme()
-  const themeName = colorScheme === 'dark' ? 'dark' : 'light'
-
   return (
-    <TamaguiProvider config={tamaguiConfig} defaultTheme={themeName}>
-      <Theme name={themeName}>
+    <TamaguiProvider config={tamaguiConfig} defaultTheme="dark">
+      <Theme name="dark">
         <QueryProvider>
-          <ThemeProvider value={themeName === 'dark' ? DarkTheme : DefaultTheme}>
-            <Stack screenOptions={{ headerShown: false }} />
-            <StatusBar style={themeName === 'dark' ? 'light' : 'dark'} />
+          <ThemeProvider value={DarkTheme}>
+            <Stack
+              screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#050505' } }}
+            />
+            <StatusBar style="light" />
           </ThemeProvider>
         </QueryProvider>
       </Theme>
