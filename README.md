@@ -35,8 +35,16 @@ Expo + React Native Web + Tamagui 기반의 크로스플랫폼 앱 프로젝트�
 .
 ├─ app/
 │  ├─ _layout.tsx          # Tamagui, React Query, Sentry, Navigation Provider
-│  └─ index.tsx            # Vox2Vocal 홈 화면
+│  ├─ index.tsx            # 로그인 화면 route
+│  └─ signup.tsx           # 회원가입 화면 route
 ├─ src/
+│  ├─ design-system/
+│  │  └─ tokens.ts         # viewport, brand/auth color, spacing, radius
+│  ├─ features/
+│  │  └─ auth/
+│  │     ├─ auth-components.tsx
+│  │     ├─ login-screen.tsx
+│  │     └─ signup-screen.tsx
 │  ├─ providers/
 │  │  └─ query-provider.tsx
 │  └─ stores/
@@ -46,6 +54,9 @@ Expo + React Native Web + Tamagui 기반의 크로스플랫폼 앱 프로젝트�
 ├─ __tests__/
 │  └─ session-store.test.ts
 ├─ assets/
+│  ├─ logo.png             # 원본 브랜드 이미지
+│  ├─ brand-icon.png       # 정사각 아이콘 파생 자산
+│  └─ brand-mark.png       # 인증 UI용 투명 배경 브랜드 마크
 ├─ app.json
 ├─ babel.config.js
 ├─ eslint.config.js
@@ -89,7 +100,10 @@ ESLint는 `eslint-config-expo/flat`을 기반으로 하며 React Native 전용 �
 
 - Expo-first 구성을 기본으로 하여 네이티브 빌드 복잡도를 낮춥니다.
 - React Native Web을 포함하여 모바일 앱과 웹앱을 같은 컴포넌트 모델로 개발합니다.
-- Tamagui를 통해 토큰, 테마, 반응형 스타일을 한 곳에서 관리합니다.
+- 프론트엔드 아키텍처 기준은 `../vox2vocal-docs/frontend/architecture.md`를 따릅니다.
+- 디자인 기준은 `../vox2vocal-docs/frontend/design-system-guide.md`와 `src/design-system/tokens.ts`를 따릅니다.
+- 브랜드 컬러는 블랙/레드 네온 톤을 기본으로 하며, 인증 화면은 `src/features/auth` 공통 컴포넌트를 재사용합니다.
+- Tamagui를 통해 토큰, 테마, 반응형 스타일을 한 곳으로 수렴시킵니다.
 - TanStack Query와 Zustand를 분리해 서버 상태와 클라이언트 상태를 결합하지 않습니다.
 - Expo Router를 사용해 URL, 네이티브 화면 구조를 함께 관리합니다.
 - `newArchEnabled`를 활성화해 최신 React Native New Architecture 방향에 맞춥니다.
@@ -98,6 +112,6 @@ ESLint는 `eslint-config-expo/flat`을 기반으로 하며 React Native 전용 �
 
 1. 인증 공급자 선택: Supabase, Clerk, Auth0, 자체 OAuth/OIDC
 2. API 클라이언트 추가: fetch wrapper, ky, axios 중 선택
-3. 디자인 토큰 확장: 브랜드 컬러, spacing, typography
+3. 디자인 토큰 확장: typography, motion, component token을 Tamagui config로 수렴
 4. EAS 설정 추가: `eas.json`, development/preview/production profile
 5. Maestro 또는 Detox 기반 E2E 테스트 추가
