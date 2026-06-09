@@ -40,4 +40,4 @@ function RootLayout() {
   )
 }
 
-export default Sentry.wrap(RootLayout)
+export default sentryDsn ? Sentry.wrap(RootLayout) : RootLayout
