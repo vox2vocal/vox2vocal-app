@@ -228,6 +228,7 @@ export function SignupScreen() {
         disabled={!acceptedTerms}
         label="가입하기"
         loading={signUp.isPending}
+        mode="signup"
         onPress={() => {
           void handleSubmit()
         }}

@@ -27,11 +27,15 @@ type AuthMode = 'login' | 'signup'
 type AuthMetrics = {
   buttonHeight: number
   formGap: number
+  horizontalPadding: number
   iconSize: number
   inputHeight: number
   inputTextSize: number
   logoSize: number
   pagePaddingY: number
+  shellWidth: number
+  shellGap: number
+  socialButtonHeight: number
   titleSize: number
 }
 
@@ -70,6 +74,7 @@ type PrimaryButtonProps = {
   disabled?: boolean
   label: string
   loading?: boolean
+  mode?: AuthMode
   onPress: () => void
 }
 
@@ -90,19 +95,41 @@ type AuthCheckboxProps = {
   onPress: () => void
 }
 
-function getAuthMetrics(width: number, height: number, mode: AuthMode): AuthMetrics {
+export function getAuthMetrics(width: number, height: number, mode: AuthMode): AuthMetrics {
   const isPhone = width < 600
+  const isVeryShort = height < 640
   const isShort = height < 760
   const isSignup = mode === 'signup'
+  const horizontalPadding = width < 360 ? spacing[5] : spacing[7]
 
   return {
-    buttonHeight: isShort || isSignup ? 56 : 62,
-    formGap: isSignup ? spacing[5] : isShort ? spacing[5] : spacing[6],
-    iconSize: isShort || isSignup ? 22 : 24,
-    inputHeight: isShort || isSignup ? 54 : 58,
-    inputTextSize: isShort || isSignup ? 17 : 18,
-    logoSize: isSignup ? 82 : isShort ? 88 : isPhone ? 104 : 112,
-    pagePaddingY: isSignup ? spacing[6] : isShort ? spacing[5] : spacing[8],
+    buttonHeight: isVeryShort ? 52 : isShort || isSignup ? 56 : 62,
+    formGap: isVeryShort ? spacing[4] : isSignup ? spacing[5] : isShort ? spacing[5] : spacing[6],
+    horizontalPadding,
+    iconSize: isVeryShort ? 20 : isShort || isSignup ? 22 : 24,
+    inputHeight: isVeryShort ? 50 : isShort || isSignup ? 54 : 58,
+    inputTextSize: isVeryShort ? 16 : isShort || isSignup ? 17 : 18,
+    logoSize: isSignup
+      ? isVeryShort
+        ? 60
+        : 82
+      : isVeryShort
+        ? 72
+        : isShort
+          ? 88
+          : isPhone
+            ? 104
+            : 112,
+    pagePaddingY: isVeryShort
+      ? spacing[4]
+      : isSignup
+        ? spacing[6]
+        : isShort
+          ? spacing[5]
+          : spacing[8],
+    shellGap: isVeryShort || isSignup ? spacing[5] : spacing[7],
+    shellWidth: Math.min(384, Math.max(0, width - horizontalPadding * 2)),
+    socialButtonHeight: isVeryShort ? 52 : 56,
     titleSize: isSignup ? 32 : isShort ? 34 : 38,
   }
 }
@@ -166,7 +193,7 @@ export function AuthScaffold({ children, mode, subtitle, title }: AuthScaffoldPr
         styles.screenContent,
         {
           minHeight: height,
-          paddingHorizontal: spacing[7],
+          paddingHorizontal: 0,
           paddingVertical: metrics.pagePaddingY,
         },
       ]}
@@ -177,7 +204,7 @@ export function AuthScaffold({ children, mode, subtitle, title }: AuthScaffoldPr
       <View style={styles.ambientGlow} />
       <KeyboardAvoidingView
         behavior={process.env.EXPO_OS === 'ios' ? 'padding' : undefined}
-        style={styles.shell}
+        style={[styles.shell, { gap: metrics.shellGap, width: metrics.shellWidth }]}
       >
         <View style={styles.brandBlock}>
           <Image
@@ -289,7 +316,16 @@ export function AuthTextField({
   )
 }
 
-export function PrimaryButton({ disabled, label, loading, onPress }: PrimaryButtonProps) {
+export function PrimaryButton({
+  disabled,
+  label,
+  loading,
+  mode = 'login',
+  onPress,
+}: PrimaryButtonProps) {
+  const { height, width } = useWindowDimensions()
+  const metrics = getAuthMetrics(width, height, mode)
+
   return (
     <Pressable
       accessibilityRole="button"
@@ -298,6 +334,7 @@ export function PrimaryButton({ disabled, label, loading, onPress }: PrimaryButt
       onPress={onPress}
       style={({ hovered, pressed }) => [
         styles.primaryButton,
+        { minHeight: metrics.buttonHeight },
         disabled ? styles.primaryButtonDisabled : null,
         hovered && !disabled ? styles.primaryButtonHovered : null,
         pressed && !disabled ? styles.primaryButtonPressed : null,
@@ -322,6 +359,8 @@ export function PrimaryButton({ disabled, label, loading, onPress }: PrimaryButt
 }
 
 export function SocialButton({ label, onPress, provider }: SocialButtonProps) {
+  const { height, width } = useWindowDimensions()
+  const metrics = getAuthMetrics(width, height, 'login')
   const icon = provider === 'google' ? <GoogleMarkIcon size={25} /> : <AppleMarkIcon size={25} />
 
   return (
@@ -332,6 +371,7 @@ export function SocialButton({ label, onPress, provider }: SocialButtonProps) {
       onPress={onPress}
       style={({ hovered, pressed }) => [
         styles.socialButton,
+        { minHeight: metrics.socialButtonHeight },
         hovered ? styles.socialButtonHovered : null,
         pressed ? styles.socialButtonPressed : null,
       ]}
@@ -453,6 +493,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
+    width: '100%',
   },
   ambientGlow: {
     backgroundColor: 'rgba(220, 38, 38, 0.22)',
