@@ -8,6 +8,7 @@ import { StatusBar } from 'expo-status-bar'
 import * as Sentry from '@sentry/react-native'
 import { TamaguiProvider, Theme } from 'tamagui'
 
+import { AuthSessionBootstrap } from '@/src/features/auth/auth-session-bootstrap'
 import { QueryProvider } from '@/src/providers/query-provider'
 import { tamaguiConfig } from '@/tamagui.config'
 
@@ -28,12 +29,17 @@ function RootLayout() {
     <TamaguiProvider config={tamaguiConfig} defaultTheme="dark">
       <Theme name="dark">
         <QueryProvider>
-          <ThemeProvider value={DarkTheme}>
-            <Stack
-              screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#050505' } }}
-            />
-            <StatusBar style="light" />
-          </ThemeProvider>
+          <AuthSessionBootstrap>
+            <ThemeProvider value={DarkTheme}>
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  contentStyle: { backgroundColor: '#050505' },
+                }}
+              />
+              <StatusBar style="light" />
+            </ThemeProvider>
+          </AuthSessionBootstrap>
         </QueryProvider>
       </Theme>
     </TamaguiProvider>

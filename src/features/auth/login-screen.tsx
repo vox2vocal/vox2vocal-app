@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Pressable, Text } from 'react-native'
 import { Link } from 'expo-router'
 
@@ -14,6 +14,7 @@ import {
   SocialButton,
   StatusMessage,
 } from './auth-components'
+import { getAuthErrorMessage, useAuthSessionActions } from './auth-session'
 
 const signupHref = '/signup' as never
 
@@ -42,32 +43,19 @@ function validateLogin(email: string, password: string): LoginErrors {
 }
 
 export function LoginScreen() {
+  const { login } = useAuthSessionActions()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [securePassword, setSecurePassword] = useState(true)
   const [errors, setErrors] = useState<LoginErrors>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formMessage, setFormMessage] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (!isSubmitting) {
-      return undefined
-    }
-
-    const timeoutId = setTimeout(() => {
-      setIsSubmitting(false)
-      setFormMessage('입력 확인이 완료되었습니다. 인증 API 연결 후 실제 로그인이 실행됩니다.')
-    }, 700)
-
-    return () => clearTimeout(timeoutId)
-  }, [isSubmitting])
 
   const clearFieldError = (field: keyof LoginErrors) => {
     setErrors((currentErrors) => ({ ...currentErrors, [field]: undefined }))
     setFormMessage(null)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const nextErrors = validateLogin(email, password)
     setErrors(nextErrors)
     setFormMessage(null)
@@ -76,7 +64,15 @@ export function LoginScreen() {
       return
     }
 
-    setIsSubmitting(true)
+    try {
+      await login.mutateAsync({
+        email: email.trim(),
+        password,
+      })
+      setFormMessage('로그인이 완료되었습니다.')
+    } catch (error) {
+      setFormMessage(getAuthErrorMessage(error))
+    }
   }
 
   const handleSecondaryAction = (message: string) => {
@@ -136,7 +132,13 @@ export function LoginScreen() {
         <Text style={authStyles.textButtonLabel}>비밀번호를 잊으셨나요?</Text>
       </Pressable>
 
-      <PrimaryButton label="로그인" loading={isSubmitting} onPress={handleSubmit} />
+      <PrimaryButton
+        label="로그인"
+        loading={login.isPending}
+        onPress={() => {
+          void handleSubmit()
+        }}
+      />
       <StatusMessage message={formMessage} />
       <Divider />
 

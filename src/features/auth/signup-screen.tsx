@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { Link } from 'expo-router'
 
@@ -15,6 +15,7 @@ import {
   PrimaryButton,
   StatusMessage,
 } from './auth-components'
+import { getAuthErrorMessage, useAuthSessionActions } from './auth-session'
 
 type SignupErrors = {
   email?: string
@@ -71,6 +72,7 @@ function validateSignup({
 }
 
 export function SignupScreen() {
+  const { signUp } = useAuthSessionActions()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -79,28 +81,14 @@ export function SignupScreen() {
   const [securePasswordConfirm, setSecurePasswordConfirm] = useState(true)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [errors, setErrors] = useState<SignupErrors>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formMessage, setFormMessage] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (!isSubmitting) {
-      return undefined
-    }
-
-    const timeoutId = setTimeout(() => {
-      setIsSubmitting(false)
-      setFormMessage('가입 정보 확인이 완료되었습니다. 인증 API 연결 후 계정이 생성됩니다.')
-    }, 700)
-
-    return () => clearTimeout(timeoutId)
-  }, [isSubmitting])
 
   const clearFieldError = (field: keyof SignupErrors) => {
     setErrors((currentErrors) => ({ ...currentErrors, [field]: undefined }))
     setFormMessage(null)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const nextErrors = validateSignup({
       acceptedTerms,
       email,
@@ -116,7 +104,16 @@ export function SignupScreen() {
       return
     }
 
-    setIsSubmitting(true)
+    try {
+      await signUp.mutateAsync({
+        displayName: name.trim(),
+        email: email.trim(),
+        password,
+      })
+      setFormMessage('회원가입이 완료되었습니다.')
+    } catch (error) {
+      setFormMessage(getAuthErrorMessage(error))
+    }
   }
 
   return (
@@ -230,8 +227,10 @@ export function SignupScreen() {
       <PrimaryButton
         disabled={!acceptedTerms}
         label="가입하기"
-        loading={isSubmitting}
-        onPress={handleSubmit}
+        loading={signUp.isPending}
+        onPress={() => {
+          void handleSubmit()
+        }}
       />
       <StatusMessage message={formMessage} />
 
