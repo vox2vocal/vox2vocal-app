@@ -18,6 +18,11 @@ import { getAuthErrorMessage, useAuthSessionActions } from './auth-session'
 
 const signupHref = '/signup' as never
 
+const temporaryLoginCredentials = {
+  email: 'user@example.com',
+  password: 'password123',
+} as const
+
 type LoginErrors = {
   email?: string
   password?: string
@@ -44,8 +49,8 @@ function validateLogin(email: string, password: string): LoginErrors {
 
 export function LoginScreen() {
   const { login } = useAuthSessionActions()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState<string>(temporaryLoginCredentials.email)
+  const [password, setPassword] = useState<string>(temporaryLoginCredentials.password)
   const [securePassword, setSecurePassword] = useState(true)
   const [errors, setErrors] = useState<LoginErrors>({})
   const [formMessage, setFormMessage] = useState<string | null>(null)

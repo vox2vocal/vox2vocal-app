@@ -91,11 +91,20 @@ describe('auth screens', () => {
   it('validates login input before calling the auth mutation', () => {
     const screen = renderWithQueryClient(<LoginScreen />)
 
+    fireEvent.changeText(screen.getByLabelText('이메일 주소'), '')
+    fireEvent.changeText(screen.getByLabelText('비밀번호'), '')
     fireEvent.press(screen.getByText('로그인'))
 
     expect(screen.getByText('이메일 주소를 입력해 주세요.')).toBeTruthy()
     expect(screen.getByText('비밀번호를 입력해 주세요.')).toBeTruthy()
     expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('prefills the login form with the temporary database account', () => {
+    const screen = renderWithQueryClient(<LoginScreen />)
+
+    expect(screen.getByLabelText('이메일 주소').props.value).toBe('user@example.com')
+    expect(screen.getByLabelText('비밀번호').props.value).toBe('password123')
   })
 
   it('submits login with trimmed email and updates the session on success', async () => {
