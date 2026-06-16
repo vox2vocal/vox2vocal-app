@@ -14,13 +14,13 @@ Default task flow:
 4. Review `git status --short` and ensure only intentional files are included.
 5. Commit the completed task automatically when verification passes.
 
-Use Conventional Commits for task commits, but write the commit message description in Korean:
+Use the Vox2Vocal Git policy for task commits. Work on a ticket branch, open a PR, and include the ticket in every commit message:
 
-- `feat(scope): 사용자 기능 추가`
-- `fix(scope): 잘못된 동작 수정`
-- `chore(scope): 도구 또는 설정 업데이트`
-- `docs(scope): 문서 업데이트`
-- `test(scope): 테스트 추가 또는 수정`
-- `refactor(scope): 동작 변경 없는 구조 개선`
+- `feat(scope): [V2V-123] 사용자 기능 추가`
+- `fix(scope): [V2V-123] 잘못된 동작 수정`
+- `chore(scope): [V2V-123] 도구 또는 설정 업데이트`
+- `docs(scope): [V2V-123] 문서 업데이트`
+- `test(scope): [V2V-123] 테스트 추가 또는 수정`
+- `refactor(scope): [V2V-123] 동작 변경 없는 구조 개선`
 
 Do not combine unrelated tasks in one commit. If `npm run verify` fails, fix the failure before committing unless the user explicitly asks to commit a failing state.
