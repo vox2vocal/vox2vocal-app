@@ -4,7 +4,7 @@ import { Link } from 'expo-router'
 
 import { LockKeyhole, Mail, ShieldCheck, UserRound } from 'lucide-react-native'
 
-import { authColors } from '@/src/design-system/tokens'
+import { authColors } from '@/src/shared/tokens'
 
 import {
   AuthCheckbox,

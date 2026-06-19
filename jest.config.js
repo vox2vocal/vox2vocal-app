@@ -6,6 +6,6 @@ module.exports = {
     '^react-native-mmkv$': '<rootDir>/__mocks__/react-native-mmkv.ts',
   },
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native|expo|expo-.*|expo-modules-core|@expo(nent)?/.*|@expo/.*|expo-router|@sentry/react-native|tamagui|@tamagui/.*|react-native-mmkv|zustand|@tanstack/react-query)/)',
+    'node_modules/(?!((jest-)?react-native|@react-native|expo|expo-.*|expo-modules-core|@expo(nent)?/.*|@expo/.*|expo-router|@sentry/react-native|nativewind|react-native-css-interop|react-native-mmkv|zustand|@tanstack/react-query)/)',
   ],
 }

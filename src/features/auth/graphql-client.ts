@@ -147,7 +147,13 @@ function getGraphQLEndpoint(): string {
     process.env.EXPO_PUBLIC_BFF_GRAPHQL_URL ||
     (Constants.expoConfig?.extra?.bffGraphqlUrl as string | undefined)
 
-  return configuredUrl || 'http://localhost:4000/graphql'
+  if (configuredUrl) {
+    return configuredUrl
+  }
+
+  return Platform.OS === 'android'
+    ? 'http://10.0.2.2:4000/graphql'
+    : 'http://localhost:4000/graphql'
 }
 
 function isAuthenticationError(error: unknown): boolean {

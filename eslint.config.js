@@ -69,7 +69,7 @@ module.exports = defineConfig([
     },
   },
   {
-    ignores: ['dist/*', 'web-build/*', '.expo/*', '.tamagui/*', 'coverage/*', 'node_modules/*'],
+    ignores: ['dist/*', 'web-build/*', '.expo/*', 'coverage/*', 'node_modules/*'],
   },
   prettierConfig,
 ])

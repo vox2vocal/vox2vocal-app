@@ -1,4 +1,4 @@
-import { getViewportClass } from '@/src/design-system/tokens'
+import { getViewportClass } from '@/src/shared/tokens'
 import { getAuthMetrics } from '@/src/features/auth/auth-components'
 
 describe('getViewportClass', () => {
